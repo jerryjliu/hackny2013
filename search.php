@@ -11,13 +11,29 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/search.js"></script>
     <script type="text/javascript">
-		$(document).ready(function(){
-			alert("hi"); 
-			//alert("hi2"); 
+	
+		function expand(id)
+		{
+			alert(id);
+			$("#search_eventshort" + id).hide();
 			
-			var url = "backend/wolfram.php"; 
+		}
+		
+		$(document).ready(function(){
+			//alert("hi2"); 
+			var wolframinfo = new Object(); 
+			var array = new Array(); 
+			
+			var url = "backend/wolfram.php?query=romney"; 
 			$.getJSON(url, function(data)
 			{
+				wolframinfo = data.wolfram; 
+				if(wolframinfo.isResultPerson == "false")
+				{
+					alert('wolfram query failed');
+					return;
+				}
+								
 				var url2 = "backend/getresults.php"; 
 				$.getJSON(url2, function(data2)
 				{
@@ -50,6 +66,7 @@
 						{
 							var bitlyarticle = bitly.articles[k];
 							var popularity = bitlyarticle.popularity;
+							//alert(bitlyarticle.title); 
 							if(popularity >= bitly_popularity) { bitly_popularity = popularity; bitly_popindex = k;}	
 						}
 						
@@ -57,8 +74,8 @@
 						for(var l = 0; l < yt.numvids; l++)
 						{
 							var video = yt.vids[l];
-							var popularity = video.popularity;
-							if(popularity > yt_popularity) {yt_popularity = popularity; yt_popindex = l;}	
+							var popularity = video.views;
+							if(popularity >= yt_popularity) {yt_popularity = popularity; yt_popindex = l;}	
 						}
 						
 						//find most popular article (out of nyt and bitly)
@@ -75,46 +92,28 @@
 						}
 						
 						var eventcontainer = "<div class='search_eventcontainer'>" +
-								"<div class='search_eventleft'>" + 
-									"<div class='search_eventtitle' id='title" + i + "'>" +
-										"<a href='#'>" + title + "</a>" +
-									"</div>" + 
-									"<div class='search_eventdesc' id='desc" + i + "'>" + 
-										excerpt +
+								"<div class='search_eventshort' id='search_eventshort" + i + "'>" +
+									"<div class='search_eventleft'>" + 
+										"<div class='search_eventtitle' id='title" + i + "'>" +
+											"<a href='javascript:void(0)' onclick='expand(" + i + ")' id='link" + i + "'>" + title + "</a>" +
+										"</div>" + 
+										"<div class='search_eventdesc' id='desc" + i + "'>" + 
+											excerpt +
+										"</div>" +
 									"</div>" +
+									"<div class='search_eventright'>" + 
+										"<div class='search_video' id='video" + i + "'>" + 
+											"Controversial Video: <br/>" + 
+											"<iframe width='240' height='160' src='" + yt.vids[yt_popindex].url + "' frameborder='0' allowfullscreen></iframe>" +
+										"</div>" + 
+									"</div>" + 
+									"<div class='clear'></div>" +
 								"</div>" +
-								"<div class='search_eventright'>" + 
-									"<div class='search_video' id='video" + i + "'>" + 
-                            			"Controversial Video: <br/>" + 
-                            			"<iframe width='240' height='160' src='//www.youtube.com/embed/9bZkp7q19f0' frameborder='0' allowfullscreen></iframe>" +
-                        			"</div>" + 
-								"</div>" + 
-								"<div class='clear'></div>" +
+								"<div class='search_eventcontainerdetail' id='search_eventcontainerdetail" + i + "'>"+
+								"</div>" +
 							"</div>";
-						
-						$('#search_timeline').append(eventcontainer);/*
-							<div class='search_eventcontainer'>
-								<div class='search_eventleft'>
-									<div class='search_eventtitle' id='title" + i + "'>
-										<a href='#'>Hello</a>
-									</div>
-									<div class='search_eventdesc' id='desc" + i + "'>
-										asdf asdf asd fasdf asdf asdf asdfa
-										sadsf asd
-										f asdf asdf asdf asdfasd fasd fasd fa
-										dsaf asdfasd fasdf asdf asd 
-									</div>
-								</div>
-								<div class='search_eventright'>
-									
-								</div>
-								<div class='clear'></div>
-							</div>
-						
-						");*/
-						$('#search_timeline').append("asdfasdfdadsf
-						asdfa''sdf
-						asdfasdf" + 1 + "asdfadsf");
+													
+						$('#search_timeline').append(eventcontainer);
 					}
 				});	
 			});
@@ -138,7 +137,7 @@
     	<div class="search_container">
             <div class="search_timeline" id="search_timeline">
           		
-           		<div class="search_eventcontainer">
+           	<!--<div class="search_eventcontainer">
                 	<div class="search_eventleft">
                     	<div class="search_eventtitle" id="title1">
                             <a href="#">Hello</a>
@@ -157,6 +156,92 @@
                         </div>
                     </div>
                     <div class="clear"></div>
+                </div> -->
+                <div class="search_eventcontainer">
+                    <div class="search_eventcontainerdetail">
+                    	<div class="search_tsection">
+                        	<div class="search_tsectiont">
+                            	Hello
+                            </div>
+                        </div>
+                        <div id="search_section2">
+                            <div class="search_eventleft2">
+                                <div class="search_eventdescfull">
+                                    Poor Mitt Romney. He seems unable to come to terms with one of the most significant episodes in his public life: the 47 percent video that undercut his chance of becoming president of the United States...
+                                </div>
+                            </div>
+                            <div class="search_eventright2">
+                                <div class="search_bitlyarticles">
+                                    <div class="search_bitlyarticlest">
+                                        Related Articles from Bitly
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div id="search_section3">
+                            <div class="search_eventleft3">
+                                <div class="search_nytcomments">
+                                    <div class="search_sectiont" id="search_commentst">
+                                        Featured Comments:
+                                    </div>
+                                    <div class="search_sectionc">
+                                    	<div class="search_featcomment">
+                                        	
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="search_eventright3">
+                                <div class="search_tweets">
+                                    <div class="search_sectiont" id="search_tweetst">
+                                        Featured Tweets:
+                                    </div>
+                                    <div class="search_sectionc">
+                                    	<div class="search_featcomment">
+                                        	hello
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="search_ytsection">
+                        
+                        </div>
+                    
+                       <!--<div class="search_eventleft">
+                           <div class="search_section" id="search_nyt">
+                           		<div class="search_sectiont" >
+                                	From the New York Times:
+                                </div>
+                                <div class="search_sectionlogo">
+                                </div>
+                                <div class="search_sectionc">
+                                	
+                                </div>
+                           </div>
+                           <div class="search_section" id="search_bitly">
+                           		<div class="search_sectiont">
+                                	Related articles from Bitly:
+                                </div>
+                                <div class="search_sectionlogo">
+                                </div>
+                           </div>
+                       </div>
+                       <div class="search_eventright">
+                           <div class="search_section" id="search_twitter">
+                           		<div class="search_sectiont">
+                                	Trending Tweets:
+                                </div>
+                                <div class="search_sectionlogo">
+                                    
+                                </div>
+                                asdfadsf
+                           </div>
+                       </div>
+                       <div class="clear"></div> -->
+                    </div>
                 </div>
             </div>
         </div>

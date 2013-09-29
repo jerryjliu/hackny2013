@@ -92,6 +92,106 @@
 }
 
 
+.search_eventcontainerdetail
+{
+	margin-top:15px;
+	margin-left:15px;
+}
+
+.search_tsection
+{
+	
+}
+
+.search_tsectiont
+{
+	font-size:36px;
+	padding-bottom:15px;
+}
+
+.search_eventdescfull
+{
+	font-size:14px;	
+}
+
+.search_bitlyarticles
+{
+	
+}
+.search_bitlyarticlest
+{
+	font-size:16px;
+}
+.search_bitlyarticle
+{
+	
+}
+
+#search_section2
+{
+	margin-top:10px;
+	margin-bottom:10px;	
+}
+
+.search_eventleft2
+{
+	float:left;
+	width:70%;
+}
+.search_eventright2
+{
+	border-left:solid;
+	border-width:thin;
+	border-color:gray;
+	min-height:100px;
+	padding-left:5px;
+	float:left;
+}
+
+#search_section3
+{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+.search_eventleft3
+{
+	float:left;
+	width:50%;
+}
+
+.search_eventright3
+{
+	float:left;
+	padding-left:5px;
+	width:45%;
+}
+
+.search_sectiont
+{
+	font-size:15px;	
+}
+
+.search_sectionc
+{
+	
+}
+
+.search_featcomment
+{
+	border:solid;
+	border-width:thin;
+	border-radius:6px;
+	padding:10px;
+	width:1
+}
+
+.search_ytsection
+{
+	padding-bottom:50px;
+}
+
+
 /***Common elements ***/
 
 .submitbutton
