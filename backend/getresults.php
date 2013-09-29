@@ -63,18 +63,21 @@
                 	"popularity":70,
                     "title":"Mitt Romney Bitly 1",
                     "excerpt":"Mitt Romney Bitly Excerpt 1",
+                    "url":"http://www.cnn.com/2013/09/28/politics/shutdown-showdown/index.html?hpt=hp_t1",
                     "numcomments":0
                 },
                 {
                 	"popularity":50,
                     "title":"Mitt Romney Bitly 2",
                     "excerpt":"Mitt Romney Bitly Excerpt 2",
+                    "url":"http://www.cnn.com/2013/09/28/politics/shutdown-showdown/index.html?hpt=hp_t1",
                     "numcomments":0
                 },
                 {
                 	"popularity":30,
                      "title":"Mitt Romney Bitly 3",
                     "excerpt":"Mitt Romney Bitly Excerpt 3",
+                    "url":"http://www.cnn.com/2013/09/28/politics/shutdown-showdown/index.html?hpt=hp_t1",
                     "numcomments":0
                 }
             ]

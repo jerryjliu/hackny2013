@@ -30,13 +30,60 @@
 	height:50px;
 }
 
-/*** search page ***/
+/***Search page, wolfram data ***/
+.search_wolfram
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:60%;
+	min-width:600px;
+	margin-bottom:20px;
+	padding-bottom:10px;
+	border:solid;
+	border-width:thin;
+	border-color:rgb(230, 230, 230);
+}
+
+.search_wolfram_error
+{
+	border:solid;
+	border-color:#C00;
+	background-color:#F4D6DB;
+	padding:10px;	
+}
+
+.search_wolframt
+{
+	padding:20px;
+	font-size:18px;
+	font-family:Tahoma, Geneva, sans-serif;
+	color:#D52A00;	
+}
+
+.search_wolfram_stat
+{
+	padding-left:20px;
+	padding-bottom:4px;
+}
+
+.search_wolfram_statt
+{
+	font-size:16px;
+}
+
+.search_wolfram_statd
+{
+	font-size:12px;
+}
+
+/*** Search page, event abbreviated view ***/
 .search_container
 {
 	margin-left:auto;
 	margin-right:auto;
 	width:60%;
 	min-width:600px;
+	margin-bottom:50px;
 }
 
 .search_timeline
@@ -46,7 +93,6 @@
 
 .search_eventcontainer
 {
-	padding: 10px 10px 10px 10px;
 	border:solid;
 	border-width:thin;
 	border-color:rgb(230, 230, 230);
@@ -66,6 +112,7 @@
 
 .search_eventtitle
 {
+	padding:20px;
 	font-size:20px;
 }
 
@@ -87,20 +134,28 @@
 
 .search_eventdesc
 {
+	padding-left:20px;
+	padding-right:20px;
 	margin-top:5px;
 	font-size:13px;
 }
 
+.search_video
+{
+	padding-top:20px;	
+}
+
+/*****Event detail ******/
 
 .search_eventcontainerdetail
 {
 	margin-top:15px;
-	margin-left:15px;
+	//visibility:hidden;
 }
 
 .search_tsection
 {
-	
+	padding:15px;
 }
 
 .search_tsectiont
@@ -120,15 +175,41 @@
 }
 .search_bitlyarticlest
 {
+	padding-left:5px;
 	font-size:16px;
 }
 .search_bitlyarticle
 {
-	
+	margin:5px;
 }
 
-#search_section2
+.search_bitlyarticle a:link
 {
+	color:rgb(60, 99, 140); 
+}
+.search_bitlyarticle a:active
+{
+	margin-bottom:5px;
+}
+.search_bitlyarticle a:visited
+{
+	margin-bottom:5px;
+}
+.search_bitlyarticle a:hover
+{
+	text-decoration:underline;
+}
+
+
+.search_bitlyc
+{
+		
+}
+
+.search_section2
+{
+	padding-left:15px;
+	padding-right:15px;
 	margin-top:10px;
 	margin-bottom:10px;	
 }
@@ -148,8 +229,12 @@
 	float:left;
 }
 
-#search_section3
+.search_section3
 {
+	background-color:#D2D2D2;
+	padding-top:20px;
+	padding-left:20px;
+	padding-bottom:20px;
 	margin-top:20px;
 	margin-bottom:20px;
 }
@@ -169,26 +254,109 @@
 
 .search_sectiont
 {
-	font-size:15px;	
+	padding-left:5px;
+	font-size:20px;	
+	padding-bottom:5px;
 }
 
 .search_sectionc
 {
-	
+	padding-top:1px;
+	padding-bottom:1px;
 }
 
 .search_featcomment
 {
-	border:solid;
-	border-width:thin;
+	margin:5px;
+	padding:10px;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	background-color:white;
+	
+}
+
+.search_featcommentt
+{
+	font-size:18px;
+	font-weight:bold;
+}
+
+.search_tweet
+{
+	margin:5px;
+	background-color:rgb(64, 153, 255);
 	border-radius:6px;
 	padding:10px;
-	width:1
+}
+.search_tweett
+{
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:white;
+	font-size:16px;
+	font-weight:bold;	
+}
+
+.search_tweeta
+{
+	color:white;
+	font-size:11px;
 }
 
 .search_ytsection
 {
+	padding-top:10px;
+	padding-left:20px;
 	padding-bottom:50px;
+}
+
+.search_ytsectiont
+{
+	font-size:30px;
+	margin-bottom:20px;	
+}
+
+.search_vidleft
+{
+	float:left;
+	width:65%;	
+}
+
+.search_vidright
+{
+	float:left;
+	padding-left:10px;
+	width:30%;
+}
+
+.search_vidstat
+{
+	margin-bottom:20px;
+	font-size:24px;
+	color:#666;	
+}
+
+.search_vidcomments
+{
+	padding:10px;
+	width:60%;	
+}
+
+.search_vidcomment
+{
+	margin-bottom:5px;
+	padding-bottom:5px;
+	border-bottom:solid;
+	border-width:thin;
+	border-color:#CCC;
+}
+
+.search_vidcommenta
+{
+	color:#2793e6;
+	font-size:13px;
+	font-weight:bold;	
+}
+.search_vidcommentt
+{
 }
 
 

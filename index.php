@@ -18,7 +18,7 @@
            
             <div class="home_textContainer">
                 <form method="post" action="search.php">
-                    <input type="text" class="span5">
+                    <input type="text" class="span5" name="query">
                     <input type="submit" class="btn">
             	</form> 
             </div>
