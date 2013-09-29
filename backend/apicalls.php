@@ -188,6 +188,6 @@ function parseNYContent($keyword, $nyResults, $startTime, $endTime){
 	echo(json_encode($mongoJson, JSON_FORCE_OBJECT));
 	echo("<br /><br />");
 }
-fetchAndInsertData("Mitt Romney");
+//fetchAndInsertData("Mitt Romney");
 
 ?>
