@@ -11,8 +11,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/search.js"></script>
     <script type="text/javascript">
-	
-		function expand(id)
+	function expand(id)
 		{
 			//alert(id);
 			$("#search_eventshort" + id).hide();
@@ -294,8 +293,6 @@
 			});
 		
 		});
-		
-		
 	</script>
     <div class="navbar">
       <div class="navbar-inner">
