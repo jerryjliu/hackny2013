@@ -154,8 +154,11 @@ if($cursor->count()==0){
 	fetchAndInsertData($query);
 	$cursor=$nyTimes->find(array("person"=>$query));
 }
+$cursor->sort(array('end_time' => -1));
+$resJson = array();
 foreach($cursor as $document){
-	echo ($document["title"]);
+	array_push($resJson,$document);
 }
+echo(json_encode($resJson));
 ?>
->>>>>>> 732fed41fe8644a4c6cc812df4f14b719bcae7d7
+>>>>>>> 560965c563bb6c1ef392c5657c91565503fe90d9

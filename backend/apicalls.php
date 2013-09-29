@@ -1,6 +1,11 @@
 <?php
-//include("dbconnect.php");
-
+include("dbconnect.php");
+require("twitter-api.php");
+	define('YOUR_CONSUMER_KEY', 'uZzc4iOyEDdbLvYuqD5hw');
+	define('YOUR_CONSUMER_SECRET', 'IGXjprwIsc2COnoSdnaHjFKMfjuxnLMsOG58KUWMoc');
+	define('SOME_ACCESS_KEY', '183054785-1Etn9J4FTERtmkuKwDsjlwiELDXAzxyf4g2byd3O');
+	define('SOME_ACCESS_SECRET', 'tIhcOQ4y2KDxox1urGh2cVJjMr79JwZfAdUiOpKxEQ');
+	
 //generic fetch url request
 function curl_get_contents($url){
 	$ch = curl_init();
@@ -126,6 +131,7 @@ function fetchAndInsertData($query){
 }
 
 function parseNYContent($keyword, $nyResults, $startTime, $endTime){
+	global $db;
 	//echo($nyResults);
 	$mongoJson = array("person"=>$keyword);
 	$mongoJson['start_time']=$startTime;
@@ -184,10 +190,41 @@ function parseNYContent($keyword, $nyResults, $startTime, $endTime){
 			unset($similarArticles[$key]);
 		}
 		$mongoJson['similar_articles']=$similarArticles;
+		$mongoJson['tweets']=(fetchTwitterData($keyword,$startTime,$endTime));
 	}
 	echo(json_encode($mongoJson, JSON_FORCE_OBJECT));
 	echo("<br /><br />");
+	$collection = $db->nytimes;
+	$document = $mongoJson;
+	$collection->insert($document);
 }
+
+//twitter api
+function fetchTwitterData($query, $startTime, $endTime){
+	$endDate = date("Y-m-d",$endTime);
+	$beginDate = date("Y-m-d",$startTime);
+	$tweets=array(); 
+	$Client = new TwitterApiClient;
+	$Client->set_oauth ( YOUR_CONSUMER_KEY, YOUR_CONSUMER_SECRET, SOME_ACCESS_KEY, SOME_ACCESS_SECRET );
+	try {
+		$path = 'search/tweets';
+			$args = array ( 'q' => $query);
+	    $data = $Client->call( $path, $args, 'GET' );
+	    //print_r($data);
+	    $ct=0;
+	    for($i=0;$i<2;$i++){
+	    	    $randNum = rand(0,count($data['statuses'])-1);
+	    	    $tweetText = $data['statuses'][$randNum]['text']." -@".$data['statuses'][$randNum]['user']['screen_name'];
+	    	    array_push($tweets,$tweetText); 
+	    }
+	    return($tweets);
+	    //echo 'Authenticated as @',$data['screen_name'],' #',$data['id_str'],"\n";
+	}
+	catch( TwitterApiException $Ex ){
+		echo 'Status ', $Ex->getStatus(), '. Error '.$Ex->getCode(), ' - ',$Ex->getMessage(),"\n";
+	}
+}
+	
 //fetchAndInsertData("Mitt Romney");
 
 ?>
