@@ -1,1 +1,105 @@
+/***landing page ***/
+.home_logo
+{
+	margin-top:10%;
+	
+	margin-bottom:50px;
+}
 
+.home_container
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:50%;
+	min-width:400px;
+}
+
+.home_textContainer
+{
+	padding-top:10px;
+	padding-left:10px;
+	padding-right:50px;
+	background-color:gray; 
+}
+
+.home_extradata
+{
+	margin-top:10px;
+	background-color:gray;
+	padding: 10px 10px 10px 10px;
+	height:50px;
+}
+
+/*** search page ***/
+.search_container
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:60%;
+	min-width:600px;
+}
+
+.search_timeline
+{
+		
+}
+
+.search_eventcontainer
+{
+	padding: 10px 10px 10px 10px;
+	border:solid;
+	border-width:thin;
+	border-color:rgb(230, 230, 230);
+}
+
+.search_eventleft
+{
+	float:left;
+	width:60%;
+}
+
+.search_eventright
+{
+	padding-left:5px;
+	float:left;
+}
+
+.search_eventtitle
+{
+	font-size:20px;
+}
+
+.search_eventtitle a:link
+{
+	color:rgb(60, 99, 140); 
+}
+.search_eventtitle a:visited
+{
+}
+.search_eventtitle a:hover
+{
+	text-decoration:underline;
+}
+.search_eventtitle a:active
+{
+	
+}
+
+.search_eventdesc
+{
+	margin-top:5px;
+	font-size:13px;
+}
+
+
+/***Common elements ***/
+
+.submitbutton
+{
+	margin-top:-3px;
+}
+
+.clear
+{
+	clear:both;
+}
