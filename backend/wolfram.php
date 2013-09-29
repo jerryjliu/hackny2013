@@ -3,6 +3,7 @@ error_reporting(0);
 $query = $_GET['query'];
 include("apicalls.php");
 $json=json_decode(search_wolfram($query), true);
+//print_r($json);
 $pods=($json['pod']);
 $isResultPerson="false";
 $interpretation=$img=$name=$dob=$birthplace=$fact="";
@@ -10,7 +11,7 @@ for($i=0;$i<count($pods);$i++){
 	//print_r($pods[$i]);
 	if($pods[$i]['@attributes']['title']=='Input interpretation'){
 		$interpretation=$pods[$i]['subpod']['plaintext'];
-		$img=$pods[$i]['subpod']['img']['@attributes']['src'];
+		//$img=$pods[$i]['subpod']['img']['@attributes']['src'];
 		$name=trim(preg_replace("/\([^)]+\)/","",$interpretation));
 	}
 	else if($pods[$i]['@attributes']['title']=='Basic information'&&$pods[$i]['@attributes']['id']=='BasicInformation:PeopleData'){
@@ -40,6 +41,12 @@ for($i=0;$i<count($pods);$i++){
 		}
 		*/
 	}
+	else if($pods[$i]['@attributes']['title']=='Image'&&$pods[$i]['@attributes']['id']=='Image:PeopleData'){
+		//http://www4a.wolframalpha.com/Calculate/MSP/MSP34601hi62c9c0bb9724d00000gie12bfc5if162f?MSPStoreType=image/gif&s=64
+		//http:\/\/www4a.wolframalpha.com\/Calculate\/MSP\/MSP34601hi62c9c0bb9724d00000gie12bfc5if162f?MSPStoreType=image\/gif&s=64
+		$img = $pods[$i]['subpod']['img']['@attributes']['src'];
+	}
+
 }
 $result_array=array('isResultPerson'=>$isResultPerson,'interpretation'=>$interpretation,'img'=>$img,'name'=>$name,'dob'=>$dob,'birthplace'=>$birthplace,'fact'=>$fact);
 $result = json_encode(array('wolfram' => $result_array), JSON_FORCE_OBJECT);
