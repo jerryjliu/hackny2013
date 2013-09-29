@@ -6,7 +6,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/site.css" rel="stylesheet" media="screen">
   </head>	
-  <body>
+  <body style="background-image:url(img/wallpaper.jpg)">
 	<script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/search.js"></script>
@@ -15,14 +15,25 @@
 		{
 			//alert(id);
 			$("#search_eventshort" + id).hide();
-			$("#search_eventcontainerdetail" + id).show();
+			$("#search_eventcontainerdetail" + id).show(400, function(){});
+			//$("#togglearrow").click(contract(id));
+			var arr = document.getElementById("togglearrow");
+			arr.onclick = function()
+			{
+				contract(id);
+			};
 		}
 		
 		function contract(id)
 		{
 			//alert(id);
-			$("#search_eventshort" + id).show();
+			$("#search_eventshort" + id).show(400, function(){});
 			$("#search_eventcontainerdetail" + id).hide();	
+			var arr = document.getElementById("togglearrow");
+			arr.onclick = function()
+			{
+				expand(id);
+			};
 		}
 		
 		$(document).ready(function(){
@@ -35,6 +46,9 @@
 			var loader = $("<img src='img/ajax-loader.gif' style='display:block; margin-left:auto; margin-right:auto'/>");
 			$("#search_timeline").append(loader);
 			
+			<?php echo "var query = '".$_POST['query']."';"?>
+			var textfield = document.getElementById("queryTextField");
+			textfield.value = query;
 			<?php echo "var url = 'backend/wolfram.php?query=".$_POST['query']."'";?>; 
 			$.getJSON(url, function(data)
 			{
@@ -283,9 +297,9 @@
 											yt_comments_html+
 										"</div>"+	
 									"</div>"+						
-								
+								"<div class='search_arrow'><a onclick='expand("+i+")' id='togglearrow'><img src='img/arrow.png'/></a></div>"+
 							"</div>";
-													
+									
 						$('#search_timeline').append(eventcontainer);
 						contract(i);
 					}
@@ -294,13 +308,13 @@
 		
 		});
 	</script>
-    <div class="navbar">
+    <div class="navbar" id="search_navbar">
       <div class="navbar-inner">
         	<div class="search_container">
-                    <a class="brand" href="index.php">Name</a>
-                <form class="navbar-form pull-left">
-                    <input type="text" class="span6">
-                    <button type="submit" class="btn">Submit</button>
+                    <a class="brand" href="index.php">Bickr</a>
+                <form class="navbar-form pull-left" method="post" action="search.php">
+                    <input type="text" class="span6" name="query" id="queryTextField">
+                    <button type="submit" class="btn"><img src="img/searchButton.png"/></button>
                 </form>
             </div>
       </div>
@@ -311,7 +325,7 @@
             	Basic Stats 
                 <img src="img/mathematica.png" width="20px" height="20px"/>
             </div>
-            <div style="float:left; width:40%;">
+            <div style="float:left; width:40%; padding-bottom:10px;">
                 <div class="search_wolfram_stat">
                     <span class="search_wolfram_statt">Name:</span>
                     <span class="search_wolfram_statd" id="wolfram_name"></span>
@@ -329,7 +343,7 @@
                     <span class="search_wolfram_statd" id="wolfram_fact"></span>
                 </div>
             </div>
-            <div style="float:left; padding-left:10px">
+            <div style="float:left; padding-left:10px; padding-bottom:10px">
             	<img src="#" id="wolfram_image"/>
             </div>
             <div class="clear"></div>

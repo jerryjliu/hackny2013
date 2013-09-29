@@ -1,9 +1,13 @@
 /***landing page ***/
+
+
+
 .home_logo
 {
 	margin-top:10%;
-	
 	margin-bottom:50px;
+	font-size:36px;
+	text-align:center;
 }
 
 .home_container
@@ -14,12 +18,25 @@
 	min-width:400px;
 }
 
-.home_textContainer
+.home_textContainerWrapper
 {
+	margin-top:100px;
 	padding-top:10px;
 	padding-left:10px;
 	padding-right:50px;
-	background-color:gray; 
+	background-color:white;
+	border-radius:10px;
+	padding-bottom:10px;
+	filter:alpha(opacity=90);
+	opacity:0.9;
+	
+}
+
+.home_textContainer
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:80%;
 }
 
 .home_extradata
@@ -30,6 +47,19 @@
 	height:50px;
 }
 
+.home_footer
+{
+	margin-top:10px;
+	text-align:center;
+	padding-bottom:20px;
+}
+
+/***search, navbar***/
+#search_navbar
+{
+		
+}
+
 /***Search page, wolfram data ***/
 .search_wolfram
 {
@@ -38,10 +68,10 @@
 	width:60%;
 	min-width:600px;
 	margin-bottom:20px;
-	padding-bottom:10px;
 	border:solid;
 	border-width:thin;
 	border-color:rgb(230, 230, 230);
+	background-color:white;
 }
 
 .search_wolfram_error
@@ -84,6 +114,7 @@
 	width:60%;
 	min-width:600px;
 	margin-bottom:50px;
+	background-color:white;
 }
 
 .search_timeline
@@ -359,6 +390,15 @@
 {
 }
 
+
+
+/***arrow ***/
+.search_arrow
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:20px;	
+}
 
 /***Common elements ***/
 
