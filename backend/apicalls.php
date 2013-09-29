@@ -1,5 +1,5 @@
 <?php
-include("dbconnect.php");
+//include("dbconnect.php");
 
 //generic fetch url request
 function curl_get_contents($url){
