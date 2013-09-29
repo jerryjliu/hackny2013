@@ -7,7 +7,10 @@ if($cursor->count()==0){
 	fetchAndInsertData($query);
 	$cursor=$nyTimes->find(array("person"=>$query));
 }
+$cursor->sort(array('end_time' => -1));
+$resJson = array();
 foreach($cursor as $document){
-	echo ($document["title"]);
+	array_push($resJson,$document);
 }
+echo(json_encode($resJson));
 ?>
