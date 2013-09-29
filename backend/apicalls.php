@@ -192,8 +192,8 @@ function parseNYContent($keyword, $nyResults, $startTime, $endTime){
 		$mongoJson['similar_articles']=$similarArticles;
 		$mongoJson['tweets']=(fetchTwitterData($keyword,$startTime,$endTime));
 	}
-	echo(json_encode($mongoJson, JSON_FORCE_OBJECT));
-	echo("<br /><br />");
+	//echo(json_encode($mongoJson, JSON_FORCE_OBJECT));
+	//echo("<br /><br />");
 	$collection = $db->nytimes;
 	$document = $mongoJson;
 	$collection->insert($document);

@@ -11,34 +11,25 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/search.js"></script>
     <script type="text/javascript">
-	function expand(id, el)
+	function expand(id)
 		{
-			//alert(el.class);
-			/*var index;
-			var els = document.getElementsByClassName('arrows');
-			for(var i=0;i<els.length;i++){
-				if(els[i]==el){
-					index = i;
-					break;
-				}
-			}
-			alert(index); */
+			//alert(id);
 			$("#search_eventshort" + id).hide();
 			$("#search_eventcontainerdetail" + id).show(400, function(){});
 			//$("#togglearrow").click(contract(id));
-			var arr = document.getElementById("togglearrow" + id);
+			var arr = document.getElementById("togglearrow");
 			arr.onclick = function()
 			{
 				contract(id);
 			};
 		}
 		
-		function contract(id, el)
+		function contract(id)
 		{
 			//alert(id);
 			$("#search_eventshort" + id).show(400, function(){});
 			$("#search_eventcontainerdetail" + id).hide();	
-			var arr = document.getElementById("togglearrow" + id);
+			var arr = document.getElementById("togglearrow");
 			arr.onclick = function()
 			{
 				expand(id);
@@ -46,7 +37,6 @@
 		}
 		
 		$(document).ready(function(){
-			$.ajaxSetup({timeout:30000});
 			//alert("hi2"); 
 			var wolframinfo = new Object(); 
 			var array = new Array(); 
@@ -59,12 +49,11 @@
 			<?php echo "var query = '".$_POST['query']."';"?>
 			var textfield = document.getElementById("queryTextField");
 			textfield.value = query;
-			<?php echo "var url = 'backend/wolfram.php?query=".$_POST['query']."'";?>;
-			$.get(url, function(data)
+			<?php echo "var url = 'backend/wolfram.php?query=".$_POST['query']."'";?>; 
+			$.getJSON(url, function(data)
 			{
-				//alert(data);
-				var datajson = $.parseJSON(data);
-				wolframinfo = datajson.wolfram; 
+				loader.remove();
+				wolframinfo = data.wolfram; 
 				if(wolframinfo.isResultPerson == "false")
 				{
 					$(".search_wolfram").html("<div class='search_wolfram_error'>Query failed</div>");
@@ -82,25 +71,34 @@
 					$("#wolfram_image").attr("src", wolframinfo.img); 	
 				}
 								
-				var url2 = "backend/getresults.php?query=" + wolframinfo.name; 
-				$.get(url2, function(data2)
+				var url2 = "backend/getresults.php"; 
+				$.getJSON(url2, function(data2)
 				{
-					//alert(data2);
-					loader.remove();
-					var response2 = $.parseJSON(data2); 
-					//alert(response2);
-					var numrecords = response2.length;
-					//alert(numrecords);
-					for(var i = 0; i < numrecords; i++)
+					var response2 = data2; 
+					var numrecords = response2.totalrecords;
+					for(i = 0; i < numrecords; i++)
 					{
-						var c_event = response2[i]; 
-						var nyt = c_event;
+						var c_event = response2.items[i]; 
+						var nyt = c_event.nyt;
+						var bitly = c_event.bitly;
+						var yt = c_event.youtube;
+						var tw = c_event.twitter;
 						
-						for (property in nyt) {
-							//output += property + ': ' + object[property]+'; ';
+						var nyt_popularity = 0;
+						var nyt_popindex;
+						//var bitly_popularity = 0;
+						//var bitly_popindex; 
+						var yt_popularity = 0;
+						var yt_popindex;
+						
+						//find most popular nyt article
+						for(var j = 0; j < nyt.numarticles; j++)
+						{
+							var nytarticle = nyt.articles[j]; 
+							var popularity = nytarticle.popularity;	
+							if(popularity >= nyt_popularity) { nyt_popularity = popularity; nyt_popindex = j;}
 						}
-						//var bitly = c_event.bitly;
-						var tw = c_event;
+						
 						//find most popular bitly article
 						/*for(var k = 0; k < bitly.numarticles; k++)
 						{
@@ -111,22 +109,16 @@
 						} */
 						
 						//find most popular youtube video
-						/*for(var l = 0; l < yt.numvids; l++)
+						for(var l = 0; l < yt.numvids; l++)
 						{
 							var video = yt.vids[l];
 							var popularity = video.views;
 							if(popularity >= yt_popularity) {yt_popularity = popularity; yt_popindex = l;}	
-						}*/
-						if(nyt.has_results=='false'){
-							continue;
 						}
+						
 						//find most popular article (out of nyt)
-						var title = nyt.best_article.headline;
-						//alert("hola");
-
-						var excerpt = nyt.best_article.snippet;
-						//alert(title);
-						//alert(title);
+						var title = nyt.articles[nyt_popindex].title;
+						var excerpt = nyt.articles[nyt_popindex].excerpt;
 
 						/*var title, excerpt;
 						if(nyt_popularity >= bitly_popularity)
@@ -142,57 +134,57 @@
 						
 						
 						//get related articles from bitly
-						var ny_related_html = "";
-						var counter = 0;
-						for(var j in nyt.similar_articles)
+						var bitly_related_html = "";
+						for(var j = 0; j < Math.min(bitly.numarticles, 5); j++)
 						{
-							if(counter > 4)
-							{
-								break;
-							}
-							counter++;
-							var ny_related_url = nyt.similar_articles[j];
-							ny_related_html = ny_related_html.concat(
+							var bitly_title = bitly.articles[j].title;
+							var bitly_url = bitly.articles[j].url;
+							bitly_related_html = bitly_related_html.concat(
 							"<div class='search_bitlyarticle'>"+
-								"<a href='"+ny_related_url+"'>"+ny_related_url+"</a>"+
+								"<a href='"+bitly_url+"'>"+bitly_title+"</a>"+
 							"</div>");
 						}
-						if(ny_related_html == "") ny_related_html = "<div class='search_bitlyarticle'>no related articles</div>";
-																		
+												
 						//get related comments from nyt article
-						var comments = nyt.best_article.comments;
+						var comments = nyt.articles[nyt_popindex].comments;
 						var comments_html = "";
 						for(var j = 0; j < comments.length; j++)
 						{
-							var comment = comments[j];
+							var comment = comments[j].comment;
+							var user = comments[j].user; 
 							comments_html = comments_html.concat(
 							"<div class='search_featcomment'>"+
 								"<div class='search_featcommentt'>"+
-									"\""+comment+"\""+
+									comment+
+								"</div>"+
+								"<div class='search_featcommenta'>"+
+									"- " + user+
 								"</div>"+
 							"</div>");
 						}
-						
-						if(comments_html == "") comments_html="<div class='search_featcomment'>No comments available.</div>";
 						
 						//get related tweets from twitter
 						var twitter_html = "";
 						var tweets = tw.tweets;
-						for(var j = 0; j < tweets.length; j++)
+						for(var j = 0; j < tw.numtweets; j++)
 						{
 							var tweet = tweets[j];
+							var tweett = tweet.tweet;
+							var user = tweet.user;
 							twitter_html = twitter_html.concat(
 							"<div class='search_tweet'>"+
 								"<div class='search_tweett'>"+
-									"\""+tweet+"\""+
+									tweett+
+								"</div>"+
+								"<div class='search_tweeta'>"+
+									"@"+user+
 								"</div>"+
 							"</div>");
 								
 						}
-						if(twitter_html=="") twitter_html="<div class='search_tweet'>No tweets available.</div>";
 						
 						//get related info from youtube
-						/*var yt_popvid = yt.vids[yt_popindex];
+						var yt_popvid = yt.vids[yt_popindex];
 						var yt_dislikep = Math.round(yt_popvid.numdislikes * 100 / (yt_popvid.numdislikes + yt_popvid.numlikes)); 
 						var yt_views = yt_popvid.views;
 						var yt_numc = yt_popvid.numcomments;
@@ -213,35 +205,22 @@
 									commentt+
 								"</div>"+
 							"</div>");	
-						} */
-						
-						// get date of article
-						var d = new Date(0);
-						d.setUTCSeconds(nyt.best_article.datePublished);
-						
+						}
 						
 						var eventcontainer = "<div class='search_eventcontainer'>" +
 								"<div class='search_eventshort' id='search_eventshort" + i + "'>" +
 									"<div class='search_eventleft'>" + 
 										"<div class='search_eventtitle' id='title" + i + "'>" +
-											"<a href='javascript:void(0)' onclick='expand(" + i + ", this)' id='link" + i + "'>" + title + "</a>" +
+											"<a href='javascript:void(0)' onclick='expand(" + i + ")' id='link" + i + "'>" + title + "</a>" +
 										"</div>" + 
-										"<div class='search_eventdesc' id='desc" + i + "'>" +
-											"<div>"+
-												d.toLocaleString()+
-											"</div>"+
+										"<div class='search_eventdesc' id='desc" + i + "'>" + 
 											excerpt +
 										"</div>" +
 									"</div>" +
 									"<div class='search_eventright'>" + 
-										"<div class='search_bitlyarticles'>"+
-											"<div class='search_bitlyarticlest'>"+
-												"Related Articles"+
-											"</div>"+
-											"<div class='search_bitlyc'>"+
-												ny_related_html+
-											"</div>"+
-										"</div>"+
+										"<div class='search_video' id='video" + i + "'>" + 
+											"<iframe width='240' height='160' src='" + yt.vids[yt_popindex].url + "' frameborder='0' allowfullscreen></iframe>" +
+										"</div>" + 
 									"</div>" + 
 									"<div class='clear'></div>" +
 								"</div>" +
@@ -249,9 +228,6 @@
 									"<div class='search_tsection'>" +
 										"<div class='search_tsectiont'>"+
 											title+
-										"</div>"+
-										"<div>"+
-											d.toLocaleString()+
 										"</div>"+
 									"</div>"+
 									"<div class='search_section2'>"+
@@ -263,10 +239,10 @@
 										"<div class='search_eventright2'>"+
 											"<div class='search_bitlyarticles'>"+
 												"<div class='search_bitlyarticlest'>"+
-													"Related Articles"+
+													"Related Articles from Bitly"+
 												"</div>"+
 												"<div class='search_bitlyc'>"+
-													ny_related_html+
+													bitly_related_html+
 												"</div>"+
 											"</div>"+
 										"</div>"+
@@ -296,10 +272,7 @@
 										"<div class='clear'></div>"+
 									"</div>"+
 									"<div class='clear'></div>"+
-									"</div>"+
-									"<div class='search_arrow'><a onclick='expand("+i+", this)' id='togglearrow"+i+"'><img src='img/arrow.png'/></a></div>"+
-							"</div>";
-									/*"<div class='search_ytsection'>"+
+									"<div class='search_ytsection'>"+
 										"<div class='search_ytsectiont'>"+
 											"Featured Video"+
 										"</div>"+
@@ -323,12 +296,14 @@
 										"<div class='search_vidcomments'>"+
 											yt_comments_html+
 										"</div>"+	
-									"</div>"+*/						
+									"</div>"+						
+								"<div class='search_arrow'><a onclick='expand("+i+")' id='togglearrow'><img src='img/arrow.png'/></a></div>"+
+							"</div>";
 									
 						$('#search_timeline').append(eventcontainer);
 						contract(i);
 					}
-				});
+				});	
 			});
 		
 		});
@@ -336,7 +311,7 @@
     <div class="navbar" id="search_navbar">
       <div class="navbar-inner">
         	<div class="search_container">
-                    <a class="brand" href="index.php" style="position:relative;top:3px;">Bickr</a>
+                    <a class="brand" href="index.php">Bickr</a>
                 <form class="navbar-form pull-left" method="post" action="search.php">
                     <input type="text" class="span6" name="query" id="queryTextField">
                     <button type="submit" class="btn"><img src="img/searchButton.png"/></button>
@@ -368,7 +343,7 @@
                     <span class="search_wolfram_statd" id="wolfram_fact"></span>
                 </div>
             </div>
-            <div style="float:right; padding-right:10px; padding-bottom:10px;position:relative;bottom:25px;">
+            <div style="float:left; padding-left:10px; padding-bottom:10px">
             	<img src="#" id="wolfram_image"/>
             </div>
             <div class="clear"></div>

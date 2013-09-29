@@ -23,16 +23,16 @@
     <div class="container-fluid">
     	<div class="home_container">
             
-           	<div class="home_textContainerWrapper">
-                <div class="home_logo">
+           	<div class="home_textContainerWrapper" style="background-color:transparent;">
+                <div class="home_logo" style="position:relative;left:32px;color:white;font-size:60px;">
                     Bickr
                 </div>
                 <div class="home_textContainer">
                     <form method="post" action="search.php">
-                        <input type="text" class="span6" name="query" onMouseOver="focusin();" onMouseOut="unfocus();">
+                        <input type="text" style="position:relative;left:130px;font-size:20px;height:25px" class="span6" name="query" onMouseOver="focusin();" onMouseOut="unfocus();">
                     </form> 
                 </div>
-                <div class="home_footer">
+                <div class="home_footer" style="position:relative;left:32px;font-size:22px;color:white;">
         			By Jerry Liu and Luke Li
        		 	</div>
             </div>
