@@ -1,7 +1,11 @@
 <?php
 error_reporting(0);
 $query = $_GET['query'];
+$fixedQuery = str_replace(array('%20','+'),' ',$query);
 include("apicalls.php");
+$wolframalpha=$db->wolframalpha;
+$cursor=$wolframalpha->find(array("wolfram.name"=>$fixedQuery));
+if($cursor->count()==0){
 $json=json_decode(search_wolfram($query), true);
 //print_r($json);
 $pods=($json['pod']);
@@ -49,7 +53,19 @@ for($i=0;$i<count($pods);$i++){
 
 }
 $result_array=array('isResultPerson'=>$isResultPerson,'interpretation'=>$interpretation,'img'=>$img,'name'=>$name,'dob'=>$dob,'birthplace'=>$birthplace,'fact'=>$fact);
-$result = json_encode(array('wolfram' => $result_array), JSON_FORCE_OBJECT);
-echo($result);
+$result = array('wolfram' => $result_array);
+$wolframalpha->insert($result);
+echo(json_encode($result, JSON_FORCE_OBJECT));
+//$cursor=$wolframalpha->find(array("name"=>$query));
+//$result = json_encode(array('wolfram' => $result_array), JSON_FORCE_OBJECT);
+}
+else{
+foreach($cursor as $document){
+	//print_r($document);
+	echo(json_encode($document));
+	break;
+}
+}
+//echo($result);
 
 ?>
